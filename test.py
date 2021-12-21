@@ -78,3 +78,18 @@ straight_flushes = {
 #     print(duo)
 
 table_ = LookUpTable()
+tables = [table_.lookup_table_four,
+         table_.lookup_table_full_house,
+          table_.lookup_table_three,
+           table_.lookup_table_two_pairs,
+            table_.lookup_table_one_pair
+            ]
+for table in tables:
+    print(len(table))
+print("*****"*10)
+print(len(table_.lookup_table_unique))
+print("*****"*10)
+print(len(table_.lookup_table_flush))
+print("*****"*10)
+print(len(table_.lookup_table_unique) + len(table_.lookup_table_flush))
+# print(table_.lookup_table_unique)

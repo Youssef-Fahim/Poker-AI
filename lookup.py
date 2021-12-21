@@ -34,8 +34,16 @@ class LookUpTable:
     def __init__(self):
         self.lookup_table_flush = {}
         self.lookup_table_unique = {}
+
+        self.lookup_table_four = {}
+        self.lookup_table_full_house = {}
+        self.lookup_table_three = {}
+        self.lookup_table_two_pairs = {}
+        self.lookup_table_one_pair = {}
+
         self.straight = []
         self.not_straight = []
+
         self.feed_flush()
         self.feed_unique()
         self.feed_remainder()
@@ -105,7 +113,7 @@ class LookUpTable:
             self.lookup_table_unique[prime_product] = rank
 
     def feed_remainder(self):
-        pass
+        
         # 1) Four of a kind
 
         init_rank = LookUpTable.MAX_RANK_STRAIGHT_FLUSH + 1
@@ -115,9 +123,8 @@ class LookUpTable:
             kickers.remove(main_four)
             for kicker in kickers:
                 prime_product = (Card.PRIME_NUMBERS[main_four]**4) * Card.PRIME_NUMBERS[kicker]
-                self.lookup_table_unique[prime_product] = init_rank
+                self.lookup_table_four[prime_product] = init_rank
                 init_rank +=1
-
 
         # 2) Full House
 
@@ -128,9 +135,8 @@ class LookUpTable:
             kickers.remove(main_three)
             for kicker in kickers:
                 prime_product = (Card.PRIME_NUMBERS[main_three]**3) * (Card.PRIME_NUMBERS[kicker]**2)
-                self.lookup_table_unique[prime_product] = init_rank
+                self.lookup_table_full_house[prime_product] = init_rank
                 init_rank += 1
-
 
         # 3) Three of a kind
 
@@ -144,29 +150,49 @@ class LookUpTable:
             # the kickers combinations
             for kicker1, kicker2 in kickers_combinations:
                 prime_product = (Card.PRIME_NUMBERS[main_three]**3) * Card.PRIME_NUMBERS[kicker1] * Card.PRIME_NUMBERS[kicker2]
-                self.lookup_table_unique[prime_product] = init_rank
+                self.lookup_table_three[prime_product] = init_rank
                 init_rank += 1
-
 
         # 4) Two pairs
+
         init_rank = LookUpTable.MAX_RANK_THREE + 1
 
-        for kicker in Card.BACK_INT_RANKS:
-            main_twos = Card.BACK_INT_RANKS[:]
-            main_twos.remove(kicker)
-            main_twos_combinations = itertools.combinations(main_twos, 2)
-            for main_two_1, main_two_2 in main_twos_combinations:
+        main_twos = Card.BACK_INT_RANKS[:]
+        main_twos_combinations = itertools.combinations(main_twos, 2)
+        for main_two_1, main_two_2 in main_twos_combinations:
+            kickers = Card.BACK_INT_RANKS[:]
+            kickers.remove(main_two_1)
+            kickers.remove(main_two_2)
+            for kicker in kickers:
                 prime_product = (Card.PRIME_NUMBERS[main_two_1]**2) * (Card.PRIME_NUMBERS[main_two_2]**2) * Card.PRIME_NUMBERS[kicker]
-                self.lookup_table_unique[prime_product] = init_rank
+                self.lookup_table_two_pairs[prime_product] = init_rank
                 init_rank += 1
-                print(main_two_1, main_two_1, main_two_2, main_two_2, kicker, 'rank = ', init_rank)
-
-
+                # print(main_two_1, main_two_1, main_two_2, main_two_2, kicker, 'rank = ', init_rank)
 
         # 5) One pair
 
+        init_rank = LookUpTable.MAX_RANK_TWO_PAIRS + 1
 
+        for main_two in Card.BACK_INT_RANKS:
+            kickers = Card.BACK_INT_RANKS[:]
+            kickers.remove(main_two)
+            kickers_combinations = itertools.combinations(kickers, 3)
+            # kickers_combinations already classified in decreasing lexicographical order from itertools. No need to rearange 
+            # the kickers combinations
+            for kicker1, kicker2, kicker3 in kickers_combinations:
+                prime_product = (Card.PRIME_NUMBERS[main_two]**2) * Card.PRIME_NUMBERS[kicker1] * Card.PRIME_NUMBERS[kicker2] * Card.PRIME_NUMBERS[kicker3]
+                self.lookup_table_one_pair[prime_product] = init_rank
+                init_rank += 1
+                # print(main_two, main_two, kicker1, kicker2, kicker3, 'rank = ', init_rank)
 
+        self.lookup_table_unique = {
+                                    **self.lookup_table_unique,
+                                    **self.lookup_table_four,
+                                    **self.lookup_table_full_house,
+                                    **self.lookup_table_three,
+                                    **self.lookup_table_two_pairs,
+                                    **self.lookup_table_one_pair
+                                    }
 
     def get_lexographically_next_bit_sequence(self, bits):
         """
