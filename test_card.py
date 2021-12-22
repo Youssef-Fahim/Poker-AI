@@ -19,6 +19,7 @@ class TestCard(unittest.TestCase):
         self.string12 = '3c'
         self.string13 = '2h'
 
+
     def test_binary_representation_from_str_card(self):
         self.assertEqual(self.card.binary_representation_from_str_card(self.string1),  0b00010000000000000010110000101001)
         self.assertEqual(self.card.binary_representation_from_str_card(self.string2),  0b00001000000000000100101100100101)
@@ -33,6 +34,12 @@ class TestCard(unittest.TestCase):
         self.assertEqual(self.card.binary_representation_from_str_card(self.string11), 0b00000000000001000001001000000101)
         self.assertEqual(self.card.binary_representation_from_str_card(self.string12), 0b00000000000000101000000100000011)
         self.assertEqual(self.card.binary_representation_from_str_card(self.string13), 0b00000000000000010010000000000010)
+
+    def test_get_prime_product_from_(self):
+        self.assertEqual(self.card.get_prime_product_from_rankbits(0b0001111100000000), 41*37*31*29*23)
+        self.assertEqual(self.card.get_prime_product_from_rankbits(0b0001111000000001), 41*37*31*29*2)
+        self.assertEqual(self.card.get_prime_product_from_hand_string(['Ad', 'Kh', 'Ah', '7c', '2s']), 41*37*41*13*2)
+        
 
 
 if __name__ == '__main__':
