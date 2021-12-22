@@ -4,35 +4,35 @@ from lookup import LookUpTable
 from card import Card
 from evaluator import Evaluator
 
-def get_lexographically_next_bit_sequence(bits):
-    """
-    Bit hack from here:
-    http://www-graphics.stanford.edu/~seander/bithacks.html#NextBitPermutation
+# def get_lexographically_next_bit_sequence(bits):
+#     """
+#     Bit hack from here:
+#     http://www-graphics.stanford.edu/~seander/bithacks.html#NextBitPermutation
 
-    Generator even does this in poker order rank 
-    so no need to sort when done! Perfect.
-    """
-    t = (bits | (bits - 1)) + 1 
-    next = t | ((((t & -t) // (bits & -bits)) >> 1) - 1)  
-    yield next
-    while True:
-        t = (next | (next - 1)) + 1 
-        next = t | ((((t & -t) // (next & -next)) >> 1) - 1)
-        yield next
+#     Generator even does this in poker order rank 
+#     so no need to sort when done! Perfect.
+#     """
+#     t = (bits | (bits - 1)) + 1 
+#     next = t | ((((t & -t) // (bits & -bits)) >> 1) - 1)  
+#     yield next
+#     while True:
+#         t = (next | (next - 1)) + 1 
+#         next = t | ((((t & -t) // (next & -next)) >> 1) - 1)
+#         yield next
 
-straight_flushes = {
-    int('0b0001111100000000', 2) : 1, # (AKQJT)
-    int('0b0000111110000000', 2) : 2, # (KQJT9)
-    int('0b0000011111000000', 2) : 3, # (QJT98)
-    int('0b0000001111100000', 2) : 4, # (JT987)
-    int('0b0000000111110000', 2) : 5, # (T9876)
-    int('0b0000000011111000', 2) : 6, # (98765)
-    int('0b0000000001111100', 2) : 7, # (87654)
-    int('0b0000000000111110', 2) : 8, # (76543)
-    int('0b0000000000011111', 2) : 9, # (65432)
-    int('0b0001000000001111', 2) : 10 # (5432A)
+# straight_flushes = {
+#     int('0b0001111100000000', 2) : 1, # (AKQJT)
+#     int('0b0000111110000000', 2) : 2, # (KQJT9)
+#     int('0b0000011111000000', 2) : 3, # (QJT98)
+#     int('0b0000001111100000', 2) : 4, # (JT987)
+#     int('0b0000000111110000', 2) : 5, # (T9876)
+#     int('0b0000000011111000', 2) : 6, # (98765)
+#     int('0b0000000001111100', 2) : 7, # (87654)
+#     int('0b0000000000111110', 2) : 8, # (76543)
+#     int('0b0000000000011111', 2) : 9, # (65432)
+#     int('0b0001000000001111', 2) : 10 # (5432A)
 
-}
+# }
 
 # init_hand = int('0b0000000000011111', 2)
 # print(init_hand in straight_flushes)
@@ -105,5 +105,9 @@ straight_flushes = {
 # print(bin(Card().binary_representation_from_str_card('Kd')))
 # print(bin(Card().binary_representation_from_str_card('Ah')))
 
-eval = Evaluator()
-print(eval.evaluate(['Ad', 'Kh'], ['Qd', 'Jd', 'Td', 'Kd', 'Jh']))
+# eval = Evaluator()
+# print(eval.evaluate(['Ad', 'Kh'], ['Qd', 'Jd']))
+
+table_ = LookUpTable()
+print(table_.lookup_table_flush.keys())
+# print(min(table_.lookup_table_flush.values()))
