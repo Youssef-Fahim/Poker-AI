@@ -2,6 +2,7 @@ import itertools
 
 from lookup import LookUpTable
 from card import Card
+from evaluator import Evaluator
 
 def get_lexographically_next_bit_sequence(bits):
     """
@@ -77,19 +78,32 @@ straight_flushes = {
 # for duo in comb:
 #     print(duo)
 
-table_ = LookUpTable()
-tables = [table_.lookup_table_four,
-         table_.lookup_table_full_house,
-          table_.lookup_table_three,
-           table_.lookup_table_two_pairs,
-            table_.lookup_table_one_pair
-            ]
-for table in tables:
-    print(len(table))
-print("*****"*10)
-print(len(table_.lookup_table_unique))
-print("*****"*10)
-print(len(table_.lookup_table_flush))
-print("*****"*10)
-print(len(table_.lookup_table_unique) + len(table_.lookup_table_flush))
+# table_ = LookUpTable()
+# tables = [table_.lookup_table_four,
+#          table_.lookup_table_full_house,
+#           table_.lookup_table_three,
+#            table_.lookup_table_two_pairs,
+#             table_.lookup_table_one_pair
+#             ]
+# for table in tables:
+#     print(len(table))
+# print("*****"*10)
+# print(len(table_.lookup_table_unique))
+# print("*****"*10)
+# print(len(table_.lookup_table_flush))
+# print("*****"*10)
+# print(len(table_.lookup_table_unique) + len(table_.lookup_table_flush))
 # print(table_.lookup_table_unique)
+
+# INT_RANKS = list(range(13)) # [0, 1, 2, ..., 12]
+# STR_RANKS = list('23456789TJQKA')
+
+# ZIP_RANKS = zip(STR_RANKS, INT_RANKS)
+
+# print(dict(list(ZIP_RANKS)))
+
+# print(bin(Card().binary_representation_from_str_card('Kd')))
+# print(bin(Card().binary_representation_from_str_card('Ah')))
+
+eval = Evaluator()
+print(eval.evaluate(['Ad', 'Kh'], ['Qd', 'Jd', 'Td', 'Kd', 'Jh']))

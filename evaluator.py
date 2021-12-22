@@ -1,32 +1,68 @@
+import itertools
+
 from lookup import LookUpTable
+from card import Card
 
 class Evaluator:
 
-    LOOK_UP_TABLE_FLUSH = {}
-    LOOK_UP_TABLE_UNIQUE = {}
+    LOOK_UP_TABLE_FLUSH = LookUpTable().lookup_table_flush
+    LOOK_UP_TABLE_UNIQUE = LookUpTable().lookup_table_unique
 
-    def __init__(self, *hand):
-        if len(hand) != 5:
-            raise "hand must be of length 5"
+    def __init__(self):
+        self.hand_size_map = {
+                                5 : self._five,
+                                6 : self._six,
+                                7 : self._seven,
+                             }
+
+    def evaluate(self, pockets, board):
+        all_cards = pockets + board
+        return self.hand_size_map[len(all_cards)](all_cards)
+
+
+    def _five(self, cards):
+        """
+        cards in form list of str ['Ad', 'Kd', 'Qd', 'Jd', 'Td'] with size 5
+        """
+        for i in range(len(cards)):
+            cards[i] = Card.binary_representation_from_str_card(cards[i])
+
+        if cards[0] & cards[1] & cards[2] & cards[3] & cards[4] & 0xF000:
+            rankbits = (cards[0] | cards[1] | cards[2] | cards[3] | cards[4]) >> 16
+            prime = Card.get_prime_product_from_rankbits(rankbits) 
+            return Evaluator.LOOK_UP_TABLE_FLUSH[prime]
+
         else:
-            self.c1, self.c2, self.c3, self.c4, self.c5 = hand
-            self.q_check = self.c1 and self.c2 and self.c3 and self.c4 and self.c5 and bin(0xF000)
-            self.q = (self.c1 or self.c2 or self.c3 or self.c4 or self.c5) >> 16
-            self.q_int = int(self.q, 2)
+            prime = Card.get_prime_product_from_hand_binary(cards)
+            return Evaluator.LOOK_UP_TABLE_UNIQUE[prime]
 
 
-    def check_flush(self):
-        return self.q_check != 0
+    def _six(self, cards):
+        min_value = LookUpTable.MAX_RANK_HIGH
+        hand_combinations = itertools.combinations(cards, 5) # len(hand_combinations) = 6
 
-    def check_unique(self):
-        if Evaluator.LOOK_UP_TABLE_UNIQUE[self.q_int] == 0:
-            return False
-        else:
-            return True
+        for hand in hand_combinations: # hand is a tuple 
+            value = self._five(list(hand))
+            print(hand)
+            print(value)
+            if value < min_value:
+                min_value = value
 
-    def hand_rank(self):
-        if self.check_flush():
-            return Evaluator.LOOK_UP_TABLE_FLUSH[self.q_int]
-        elif self.check_unique():
-            return Evaluator.LOOK_UP_TABLE_UNIQUE[self.q_int]
+        return min_value
+
+
+    def _seven(self, cards):
+        min_value = LookUpTable.MAX_RANK_HIGH
+        hand_combinations = itertools.combinations(cards, 5) # len(hand_combinations) = 21
+
+        for hand in hand_combinations: # hand is a tuple
+            value = self._five(list(hand))
+            print(hand)
+            print(value)
+            if value < min_value:
+                min_value = value
+
+        return min_value
+
+
 
