@@ -7,7 +7,7 @@ class TestLookUp(unittest.TestCase):
         self.look_up_table = LookUpTable()
 
     def test_lookup_table_flush(self):
-        self.assertEqual(len(self.look_up_table.lookup_table_flush), 1287)
+        self.assertEqual(len(self.look_up_table.lookup_table_flush), 1288)
         self.assertEqual(min(self.look_up_table.lookup_table_flush.values()), 1)
         self.assertEqual(max(self.look_up_table.lookup_table_flush.values()), 1599)
 
