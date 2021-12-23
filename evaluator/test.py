@@ -1,4 +1,5 @@
 import itertools
+import sys
 
 from lookup import LookUpTable
 from card import Card
@@ -108,6 +109,11 @@ from evaluator import Evaluator
 # eval = Evaluator()
 # print(eval.evaluate(['Ad', 'Kh'], ['Qd', 'Jd']))
 
-table_ = LookUpTable()
-print(table_.lookup_table_flush.keys())
+# table_ = LookUpTable()
+# print(table_.lookup_table_flush.keys())
 # print(min(table_.lookup_table_flush.values()))
+
+print(sys.path)
+
+# import numpy as np
+# import pandas as pd
