@@ -1,9 +1,11 @@
 import itertools
 import sys
 
-from lookup import LookUpTable
+import scipy
+
 from card import Card
 from evaluator import Evaluator
+from lookup import LookUpTable
 
 # def get_lexographically_next_bit_sequence(bits):
 #     """
@@ -112,6 +114,7 @@ from evaluator import Evaluator
 # table_ = LookUpTable()
 # print(table_.lookup_table_flush.keys())
 # print(min(table_.lookup_table_flush.values()))
+
 
 print(sys.path)
 

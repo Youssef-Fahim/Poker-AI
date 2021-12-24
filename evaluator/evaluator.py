@@ -1,7 +1,7 @@
 import itertools
 
-from lookup import LookUpTable
 from card import Card
+from lookup import LookUpTable
 
 
 class Evaluator:
@@ -44,8 +44,8 @@ class Evaluator:
 
         for hand in hand_combinations:  # hand is a tuple
             value = self._five(list(hand))
-            print(hand)
-            print(value)
+            # print(hand)
+            # print(value)
             if value < min_value:
                 min_value = value
 
@@ -59,8 +59,8 @@ class Evaluator:
 
         for hand in hand_combinations:  # hand is a tuple
             value = self._five(list(hand))
-            print(hand)
-            print(value)
+            # print(hand)
+            # print(value)
             if value < min_value:
                 min_value = value
 
