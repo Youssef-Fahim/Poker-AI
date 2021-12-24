@@ -10,14 +10,14 @@ from evaluator import Evaluator
 #     Bit hack from here:
 #     http://www-graphics.stanford.edu/~seander/bithacks.html#NextBitPermutation
 
-#     Generator even does this in poker order rank 
+#     Generator even does this in poker order rank
 #     so no need to sort when done! Perfect.
 #     """
-#     t = (bits | (bits - 1)) + 1 
-#     next = t | ((((t & -t) // (bits & -bits)) >> 1) - 1)  
+#     t = (bits | (bits - 1)) + 1
+#     next = t | ((((t & -t) // (bits & -bits)) >> 1) - 1)
 #     yield next
 #     while True:
-#         t = (next | (next - 1)) + 1 
+#         t = (next | (next - 1)) + 1
 #         next = t | ((((t & -t) // (next & -next)) >> 1) - 1)
 #         yield next
 

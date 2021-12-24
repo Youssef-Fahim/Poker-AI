@@ -3,6 +3,7 @@ import itertools
 from lookup import LookUpTable
 from card import Card
 
+
 class Evaluator:
 
     LOOK_UP_TABLE_FLUSH = LookUpTable().lookup_table_flush
@@ -10,15 +11,14 @@ class Evaluator:
 
     def __init__(self):
         self.hand_size_map = {
-                                5 : self._five,
-                                6 : self._six,
-                                7 : self._seven,
-                             }
+            5: self._five,
+            6: self._six,
+            7: self._seven,
+        }
 
     def evaluate(self, pockets, board):
         all_cards = pockets + board
         return self.hand_size_map[len(all_cards)](all_cards)
-
 
     def _five(self, cards):
         """
@@ -29,19 +29,20 @@ class Evaluator:
 
         if cards[0] & cards[1] & cards[2] & cards[3] & cards[4] & 0xF000:
             rankbits = (cards[0] | cards[1] | cards[2] | cards[3] | cards[4]) >> 16
-            prime = Card.get_prime_product_from_rankbits(rankbits) 
+            prime = Card.get_prime_product_from_rankbits(rankbits)
             return Evaluator.LOOK_UP_TABLE_FLUSH[prime]
 
         else:
             prime = Card.get_prime_product_from_hand_binary(cards)
             return Evaluator.LOOK_UP_TABLE_UNIQUE[prime]
 
-
     def _six(self, cards):
         min_value = LookUpTable.MAX_RANK_HIGH
-        hand_combinations = itertools.combinations(cards, 5) # len(hand_combinations) = 6
+        hand_combinations = itertools.combinations(
+            cards, 5
+        )  # len(hand_combinations) = 6
 
-        for hand in hand_combinations: # hand is a tuple 
+        for hand in hand_combinations:  # hand is a tuple
             value = self._five(list(hand))
             print(hand)
             print(value)
@@ -49,13 +50,14 @@ class Evaluator:
                 min_value = value
 
         return min_value
-
 
     def _seven(self, cards):
         min_value = LookUpTable.MAX_RANK_HIGH
-        hand_combinations = itertools.combinations(cards, 5) # len(hand_combinations) = 21
+        hand_combinations = itertools.combinations(
+            cards, 5
+        )  # len(hand_combinations) = 21
 
-        for hand in hand_combinations: # hand is a tuple
+        for hand in hand_combinations:  # hand is a tuple
             value = self._five(list(hand))
             print(hand)
             print(value)
@@ -63,6 +65,3 @@ class Evaluator:
                 min_value = value
 
         return min_value
-
-
-

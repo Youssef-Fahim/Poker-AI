@@ -1,8 +1,8 @@
 import unittest
 from lookup import LookUpTable
 
-class TestLookUp(unittest.TestCase):
 
+class TestLookUp(unittest.TestCase):
     def setUp(self):
         self.look_up_table = LookUpTable()
 
@@ -16,7 +16,11 @@ class TestLookUp(unittest.TestCase):
         self.assertEqual(min(self.look_up_table.lookup_table_unique.values()), 11)
         self.assertEqual(max(self.look_up_table.lookup_table_unique.values()), 7462)
 
-        self.assertEqual(len(self.look_up_table.lookup_table_unique) + len(self.look_up_table.lookup_table_flush), 7462)
+        self.assertEqual(
+            len(self.look_up_table.lookup_table_unique)
+            + len(self.look_up_table.lookup_table_flush),
+            7462,
+        )
 
     def test_lookup_table_four(self):
         self.assertEqual(len(self.look_up_table.lookup_table_four), 156)
@@ -44,6 +48,5 @@ class TestLookUp(unittest.TestCase):
         self.assertEqual(max(self.look_up_table.lookup_table_one_pair.values()), 6185)
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
